@@ -25,9 +25,25 @@
 <div class="item">
     <div>Descrição</div>
     <div>
-        <textarea name="description">
-          {{product.description}}
-        </textarea>
+        <textarea name="description">{{product.description}}</textarea>
+    </div>
+</div>
+
+<div class="item">
+    <div>Fotos</div>
+    <div>
+        <div id="photos-upload">
+          <input 
+            type="file" 
+            id="photos-input" 
+            name="photos" 
+            multiple 
+            accept="image/*"
+            onchange="PhotosUpload.handleFileInput(event)"
+          >
+          <p>Selecione até 6 fotos</p>
+        </div>
+        <div id="photos-preview"></div>
     </div>
 </div>
 
@@ -39,7 +55,7 @@
           name="price"
           placeholder="Preço do Produto"
           value="{{product.price}}"
-          
+          onkeydown="Mask.apply(this, 'formatBRL')"
         >
     </div>
 
@@ -56,11 +72,11 @@
         name="quantity" 
         placeholder="Estoque Disponível" 
         required="required" 
-        value="{{product.name}}">
+        value="{{product.quantity}}">
     </div>
 </div>
 
-{% if product.status %}
+{% if (product.status == '1') or (product.status == '0') %}
 <div class="item">
     <div>Disponibilidade</div>
     <div>
