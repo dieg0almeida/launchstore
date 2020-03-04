@@ -1,6 +1,9 @@
 const db = require('../../config/db');
 
 module.exports = {
+    all(){
+        return db.promise().query('SELECT * FROM products ORDER BY updated_at DESC');
+    },
     create(data){
         const query = `INSERT INTO
          products (category_id, user_id, name, description, old_price, price, quantity, status) 
@@ -54,5 +57,36 @@ module.exports = {
     },
     destroy(id){
         return db.promise().query(`DELETE FROM products WHERE id = ${id}`);
+    },
+    files(id){
+        return db.promise().query(`SELECT * FROM files WHERE product_id = ${id}`);
+    },
+    search(params) {
+        const { filter, category } = params
+
+        let query = "",
+            filterQuery = `WHERE`
+
+        if (category) {
+            filterQuery = `${filterQuery}
+            products.category_id = ${category}
+            AND`
+        }
+
+        filterQuery = `
+            ${filterQuery}
+            products.name like '%${filter}%'
+            OR products.description like '%${filter}%'
+        `
+
+        query = `
+            SELECT products.*,
+                categories.name AS category_name
+            FROM products
+            JOIN categories ON (categories.id = products.category_id)
+            ${filterQuery}
+        `
+
+        return db.promise().query(query);
     }
 }
