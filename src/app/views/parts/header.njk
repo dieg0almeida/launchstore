@@ -20,16 +20,17 @@
         <nav class="primary">
           <ul>
             <li>
-              <a href="ads/create">
+              <a href="/ads/create">
                 <i class="material-icons">add</i>
                 Novo Anúncio
               </a>
             </li>
             <li class="accounts">
-              <a href="/accounts">
+              <a href="/user/login">
                 <i class="material-icons">account_circle</i>
                 Minha Conta
               </a>
+              {% if session.userId %}
               <ul class="submenu">
                 <li>
                   <a href="/user">Configurações</a>
@@ -46,6 +47,7 @@
                   </form>
                 </li>
               </ul>
+              {% endif %}
             </li>
           </ul>
         </nav>

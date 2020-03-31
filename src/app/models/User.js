@@ -42,6 +42,12 @@ module.exports = {
 
         return db.promise().query(query);
     },
+    findByEmail(email) {
+        const query = `SELECT * FROM users 
+        WHERE email LIKE '${email}'`;
+
+        return db.promise().query(query);
+    },
     update(user) {
         const query = `UPDATE users SET
         name = ?,
@@ -58,6 +64,38 @@ module.exports = {
             user.cpf_cnpj,
             user.cep,
             user.address,
+            user.id
+        ];
+
+        return db.promise().query(query, values);
+    },
+    updateToken(user){
+        const query = `UPDATE users SET
+        reset_token = ?,
+        reset_token_expire = ?
+        WHERE id = ?
+        `;
+
+        const values = [
+            user.reset_token,
+            user.reset_token_expire,
+            user.id
+        ];
+
+        return db.promise().query(query, values);
+    },
+    updatePassword(user){
+        const query = `UPDATE users SET
+        password = ?,
+        reset_token = ?,
+        reset_token_expire = ?
+        WHERE id = ?
+        `;
+
+        const values = [
+            user.password,
+            user.reset_token,
+            user.reset_token_expire,
             user.id
         ];
 

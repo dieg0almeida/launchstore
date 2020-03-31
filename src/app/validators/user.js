@@ -50,7 +50,7 @@ module.exports = {
 
         const results = await User.findById(userId);
 
-        if (!results[0] > 0) {
+        if (!results[0].length > 0) {
             return res.render('user/register', {
                 error: "Usuário não encontrado!"
             })
@@ -60,6 +60,7 @@ module.exports = {
 
         req.user = user;
 
+        console.log(req.user);
         next();
     },
     async update(req, res, next) {
